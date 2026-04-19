@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: imdb-sentiment-analysis
-        image: 020866158197.dkr.ecr.us-east-1.amazonaws.com/imdb-sentiment-analysis:latest
+        image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/imdb-sentiment-analysis:latest
         ports:
         - containerPort: 5000
         resources:
