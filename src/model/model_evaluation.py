@@ -120,8 +120,10 @@ def main():
             y_test = test_data.iloc[:, -1].values
 
             metrics = evaluate_model(clf, X_test, y_test)
-            
-            save_metrics(metrics, 'reports/metrics.json')
+
+            reports_path = "./reports"
+            os.makedirs(reports_path, exist_ok=True)
+            save_metrics(metrics, os.path.join(reports_path, "metrics.json"))
             
             # Log metrics to MLflow
             for metric_name, metric_value in metrics.items():

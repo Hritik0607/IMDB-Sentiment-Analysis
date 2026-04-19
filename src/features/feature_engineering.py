@@ -39,7 +39,7 @@ def load_data(file_path: str) -> pd.DataFrame:
         logging.error('Unexpected error occurred while loading the data: %s', e)
         raise
 
-def apply_bow(train_data: pd.DataFrame, test_data: pd.DataFrame, max_features: int) -> tuple:
+def apply_bow(train_data: pd.DataFrame, test_data: pd.DataFrame, max_features: int, model_path: str) -> tuple:
     """Apply Count Vectorizer to the data."""
     try:
         logging.info("Applying BOW...")
@@ -59,7 +59,8 @@ def apply_bow(train_data: pd.DataFrame, test_data: pd.DataFrame, max_features: i
         test_df = pd.DataFrame(X_test_bow.toarray())
         test_df['label'] = y_test
 
-        pickle.dump(vectorizer, open('models/vectorizer.pkl', 'wb'))
+        os.makedirs(model_path, exist_ok=True)
+        pickle.dump(vectorizer, open(os.path.join(model_path, "vectorizer.pkl"), 'wb'))
         logging.info('Bag of Words applied and data transformed')
 
         return train_df, test_df
@@ -86,7 +87,8 @@ def main():
         train_data = load_data('./data/interim/train_processed.csv')
         test_data = load_data('./data/interim/test_processed.csv')
 
-        train_df, test_df = apply_bow(train_data, test_data, max_features)
+        model_path = "./data"
+        train_df, test_df = apply_bow(train_data, test_data, max_features, model_path)
 
         save_data(train_df, os.path.join("./data", "processed", "train_bow.csv"))
         save_data(test_df, os.path.join("./data", "processed", "test_bow.csv"))
